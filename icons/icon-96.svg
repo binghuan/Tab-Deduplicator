@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b35;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f7931e;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景圓形 -->
+  <circle cx="48" cy="48" r="44" fill="url(#grad1)"/>
+  
+  <!-- 標籤頁圖示 -->
+  <rect x="20" y="28" width="36" height="28" rx="4" fill="white" opacity="0.9"/>
+  <rect x="20" y="20" width="16" height="8" rx="2" fill="white" opacity="0.9"/>
+  
+  <!-- 第二個標籤頁（重疊） -->
+  <rect x="40" y="40" width="36" height="28" rx="4" fill="white" opacity="0.7"/>
+  <rect x="40" y="32" width="16" height="8" rx="2" fill="white" opacity="0.7"/>
+  
+  <!-- X 符號（表示關閉重複） -->
+  <circle cx="72" cy="24" r="12" fill="#e53935"/>
+  <line x1="66" y1="18" x2="78" y2="30" stroke="white" stroke-width="4" stroke-linecap="round"/>
+  <line x1="78" y1="18" x2="66" y2="30" stroke="white" stroke-width="4" stroke-linecap="round"/>
+</svg>

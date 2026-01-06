@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="header">
+      <h1>🔄 Tab Deduplicator</h1>
+    </div>
+    
+    <div class="stats-section">
+      <div class="stat-item">
+        <span class="stat-label">總標籤頁數</span>
+        <span class="stat-value" id="totalTabs">-</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">重複標籤頁</span>
+        <span class="stat-value" id="duplicateTabs">-</span>
+      </div>
+    </div>
+    
+    <div class="toggle-section">
+      <label class="toggle-label">
+        <span>啟用自動偵測</span>
+        <input type="checkbox" id="enableToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    
+    <div class="actions-section">
+      <button id="scanBtn" class="btn btn-secondary">
+        🔍 掃描重複頁面
+      </button>
+      <button id="closeAllBtn" class="btn btn-primary">
+        🗑️ 關閉所有重複
+      </button>
+    </div>
+    
+    <div class="duplicates-list" id="duplicatesList">
+      <!-- 重複標籤頁列表會顯示在這裡 -->
+    </div>
+    
+    <div class="footer">
+      <a href="#" id="optionsLink">⚙️ 設定</a>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

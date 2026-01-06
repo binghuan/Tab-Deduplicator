@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "Tab Deduplicator",
+  "version": "1.0.0",
+  "description": "自動檢測重複的標籤頁，關閉舊的標籤頁並保留新開啟的標籤頁",
+  "author": "Your Name",
+  "icons": {
+    "48": "icons/icon-48.svg",
+    "96": "icons/icon-96.svg"
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "notifications"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/icon-48.svg",
+      "38": "icons/icon-96.svg"
+    },
+    "default_title": "Tab Deduplicator",
+    "default_popup": "popup/popup.html"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": false
+  }
+}
