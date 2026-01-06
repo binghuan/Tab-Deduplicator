@@ -3,7 +3,7 @@
   "name": "Tab Deduplicator",
   "version": "1.0.0",
   "description": "Automatically detect duplicate tabs, close old tabs and keep newly opened tabs",
-  "author": "Bing-Huan Lin",
+  "author": "BH Lin",
   "homepage_url": "https://github.com/binghuan/Tab-Deduplicator",
   "browser_specific_settings": {
     "gecko": {
