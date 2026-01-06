@@ -35,7 +35,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     duplicatesList.innerHTML = '';
     
     if (duplicates.length === 0) {
-      duplicatesList.innerHTML = '<div class="no-duplicates">✨ No duplicate tabs found</div>';
+      const noResults = document.createElement('div');
+      noResults.className = 'no-duplicates';
+      noResults.textContent = '✨ No duplicate tabs found';
+      duplicatesList.appendChild(noResults);
       duplicatesList.classList.add('show');
       return;
     }
@@ -58,11 +61,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       }
       
-      item.innerHTML = `
-        <div class="duplicate-url" title="${dup.url}">${displayUrl}</div>
-        <div class="duplicate-count">${dup.count} duplicate tabs</div>
-      `;
+      const urlDiv = document.createElement('div');
+      urlDiv.className = 'duplicate-url';
+      urlDiv.title = dup.url;
+      urlDiv.textContent = displayUrl;
       
+      const countDiv = document.createElement('div');
+      countDiv.className = 'duplicate-count';
+      countDiv.textContent = `${dup.count} duplicate tabs`;
+      
+      item.appendChild(urlDiv);
+      item.appendChild(countDiv);
       duplicatesList.appendChild(item);
     });
     
