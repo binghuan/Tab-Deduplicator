@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 取得 DOM 元素
+  // Get DOM elements
   const enabledEl = document.getElementById('enabled');
   const showNotificationEl = document.getElementById('showNotification');
   const ignoreHashEl = document.getElementById('ignoreHash');
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const resetBtnEl = document.getElementById('resetBtn');
   const statusMessageEl = document.getElementById('statusMessage');
   
-  // 載入設定
+  // Load settings
   async function loadSettings() {
     try {
       const settings = await browser.runtime.sendMessage({ action: 'getSettings' });
@@ -30,12 +30,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       ignoreSearchEl.checked = settings.ignoreSearch;
       excludedDomainsEl.value = (settings.excludedDomains || []).join('\n');
     } catch (error) {
-      console.error('載入設定失敗:', error);
-      showStatus('載入設定失敗', 'error');
+      console.error('Failed to load settings:', error);
+      showStatus('Failed to load settings', 'error');
     }
   }
   
-  // 儲存設定
+  // Save settings
   async function saveSettings() {
     try {
       const excludedDomains = excludedDomainsEl.value
@@ -56,16 +56,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         settings: settings
       });
       
-      showStatus('✅ 設定已儲存', 'success');
+      showStatus('✅ Settings saved', 'success');
     } catch (error) {
-      console.error('儲存設定失敗:', error);
-      showStatus('儲存設定失敗', 'error');
+      console.error('Failed to save settings:', error);
+      showStatus('Failed to save settings', 'error');
     }
   }
   
-  // 重置為預設設定
+  // Reset to default settings
   async function resetSettings() {
-    if (!confirm('確定要重置所有設定為預設值嗎？')) {
+    if (!confirm('Are you sure you want to reset all settings to default?')) {
       return;
     }
     
@@ -76,14 +76,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
       
       await loadSettings();
-      showStatus('✅ 已重置為預設設定', 'success');
+      showStatus('✅ Reset to default settings', 'success');
     } catch (error) {
-      console.error('重置設定失敗:', error);
-      showStatus('重置設定失敗', 'error');
+      console.error('Failed to reset settings:', error);
+      showStatus('Failed to reset settings', 'error');
     }
   }
   
-  // 顯示狀態訊息
+  // Display status message
   function showStatus(message, type) {
     statusMessageEl.textContent = message;
     statusMessageEl.className = 'status-message ' + type;
@@ -93,10 +93,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     }, 3000);
   }
   
-  // 綁定事件
+  // Bind events
   saveBtnEl.addEventListener('click', saveSettings);
   resetBtnEl.addEventListener('click', resetSettings);
   
-  // 初始載入設定
+  // Initial load settings
   await loadSettings();
 });

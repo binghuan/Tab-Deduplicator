@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Tab Deduplicator",
   "version": "1.0.0",
-  "description": "自動檢測重複的標籤頁，關閉舊的標籤頁並保留新開啟的標籤頁",
+  "description": "Automatically detect duplicate tabs, close old tabs and keep newly opened tabs",
   "author": "Your Name",
   "icons": {
     "48": "icons/icon-48.svg",

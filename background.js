@@ -1,18 +1,18 @@
 // Tab Deduplicator - Background Script
-// 當開啟重複的標籤頁時，關閉舊的標籤頁並保留新的
+// When opening a duplicate tab, close the old tab and keep the new one
 
-// 預設設定
+// Default settings
 const DEFAULT_SETTINGS = {
   enabled: true,
-  ignoreHash: true,        // 忽略 URL 中的 hash (#)
-  ignoreSearch: false,     // 忽略 URL 中的查詢參數 (?)
-  showNotification: true,  // 顯示通知
-  excludedDomains: []      // 排除的網域
+  ignoreHash: true,        // Ignore hash (#) in URL
+  ignoreSearch: false,     // Ignore query parameters (?) in URL
+  showNotification: true,  // Show notifications
+  excludedDomains: []      // Excluded domains
 };
 
 let settings = { ...DEFAULT_SETTINGS };
 
-// 載入設定
+// Load settings
 async function loadSettings() {
   try {
     const stored = await browser.storage.local.get('settings');
@@ -20,35 +20,35 @@ async function loadSettings() {
       settings = { ...DEFAULT_SETTINGS, ...stored.settings };
     }
   } catch (error) {
-    console.error('載入設定失敗:', error);
+    console.error('Failed to load settings:', error);
   }
 }
 
-// 儲存設定
+// Save settings
 async function saveSettings() {
   try {
     await browser.storage.local.set({ settings });
   } catch (error) {
-    console.error('儲存設定失敗:', error);
+    console.error('Failed to save settings:', error);
   }
 }
 
-// 標準化 URL（用於比較）
+// Normalize URL (for comparison)
 function normalizeUrl(url) {
   try {
     const urlObj = new URL(url);
     
-    // 忽略 hash
+    // Ignore hash
     if (settings.ignoreHash) {
       urlObj.hash = '';
     }
     
-    // 忽略查詢參數
+    // Ignore query parameters
     if (settings.ignoreSearch) {
       urlObj.search = '';
     }
     
-    // 移除結尾的斜線
+    // Remove trailing slash
     let normalized = urlObj.href;
     if (normalized.endsWith('/') && urlObj.pathname !== '/') {
       normalized = normalized.slice(0, -1);
@@ -60,7 +60,7 @@ function normalizeUrl(url) {
   }
 }
 
-// 檢查網域是否被排除
+// Check if domain is excluded
 function isDomainExcluded(url) {
   try {
     const urlObj = new URL(url);
@@ -72,7 +72,7 @@ function isDomainExcluded(url) {
   }
 }
 
-// 檢查是否為有效的 URL（排除特殊頁面）
+// Check if URL is valid (exclude special pages)
 function isValidUrl(url) {
   if (!url) return false;
   
@@ -89,7 +89,7 @@ function isValidUrl(url) {
   return !invalidPrefixes.some(prefix => url.startsWith(prefix));
 }
 
-// 尋找重複的標籤頁
+// Find duplicate tab
 async function findDuplicateTab(newTab) {
   if (!settings.enabled) return null;
   if (!newTab.url || !isValidUrl(newTab.url)) return null;
@@ -101,10 +101,10 @@ async function findDuplicateTab(newTab) {
     const allTabs = await browser.tabs.query({});
     
     for (const tab of allTabs) {
-      // 跳過新標籤頁本身
+      // Skip the new tab itself
       if (tab.id === newTab.id) continue;
       
-      // 跳過無效的 URL
+      // Skip invalid URLs
       if (!tab.url || !isValidUrl(tab.url)) continue;
       
       const normalizedTabUrl = normalizeUrl(tab.url);
@@ -114,36 +114,36 @@ async function findDuplicateTab(newTab) {
       }
     }
   } catch (error) {
-    console.error('尋找重複標籤頁失敗:', error);
+    console.error('Failed to find duplicate tab:', error);
   }
   
   return null;
 }
 
-// 處理重複標籤頁
+// Handle duplicate tab
 async function handleDuplicateTab(newTab, oldTab) {
   try {
-    // 關閉舊的標籤頁
+    // Close the old tab
     await browser.tabs.remove(oldTab.id);
     
-    // 啟動新的標籤頁
+    // Activate the new tab
     await browser.tabs.update(newTab.id, { active: true });
     
-    // 顯示通知
+    // Show notification
     if (settings.showNotification) {
       showNotification(newTab.url);
     }
     
-    console.log(`已關閉重複標籤頁: ${oldTab.url}`);
+    console.log(`Closed duplicate tab: ${oldTab.url}`);
   } catch (error) {
-    console.error('處理重複標籤頁失敗:', error);
+    console.error('Failed to handle duplicate tab:', error);
   }
 }
 
-// 顯示通知
+// Show notification
 function showNotification(url) {
   try {
-    // 縮短 URL 以便顯示
+    // Shorten URL for display
     let displayUrl = url;
     if (url.length > 50) {
       displayUrl = url.substring(0, 47) + '...';
@@ -151,19 +151,19 @@ function showNotification(url) {
     
     browser.notifications.create({
       type: 'basic',
-      iconUrl: browser.runtime.getURL('icons/icon-96.png'),
+      iconUrl: browser.runtime.getURL('icons/icon-96.svg'),
       title: 'Tab Deduplicator',
-      message: `已關閉重複的標籤頁:\n${displayUrl}`
+      message: `Closed duplicate tab:\n${displayUrl}`
     });
   } catch (error) {
-    // 通知 API 可能不可用，忽略錯誤
-    console.log('無法顯示通知');
+    // Notification API may not be available, ignore error
+    console.log('Unable to show notification');
   }
 }
 
-// 監聽標籤頁更新事件
+// Listen for tab update events
 browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
-  // 只在 URL 變更且載入完成時處理
+  // Only process when URL changes and loading is complete
   if (changeInfo.url && changeInfo.status === 'complete') {
     const duplicateTab = await findDuplicateTab(tab);
     if (duplicateTab) {
@@ -172,9 +172,9 @@ browser.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
   }
 });
 
-// 監聽標籤頁建立事件
+// Listen for tab created events
 browser.tabs.onCreated.addListener(async (tab) => {
-  // 等待一小段時間讓 URL 載入
+  // Wait a short time for URL to load
   setTimeout(async () => {
     try {
       const updatedTab = await browser.tabs.get(tab.id);
@@ -185,12 +185,12 @@ browser.tabs.onCreated.addListener(async (tab) => {
         }
       }
     } catch (error) {
-      // 標籤頁可能已被關閉，忽略錯誤
+      // Tab may have been closed, ignore error
     }
   }, 500);
 });
 
-// 監聽來自 popup 的訊息
+// Listen for messages from popup
 browser.runtime.onMessage.addListener(async (message, sender) => {
   switch (message.action) {
     case 'getSettings':
@@ -212,7 +212,7 @@ browser.runtime.onMessage.addListener(async (message, sender) => {
   }
 });
 
-// 取得統計資訊
+// Get statistics
 async function getStats() {
   const tabs = await browser.tabs.query({});
   const validTabs = tabs.filter(tab => isValidUrl(tab.url));
@@ -239,7 +239,7 @@ async function getStats() {
   };
 }
 
-// 掃描所有重複標籤頁
+// Scan all duplicate tabs
 async function scanAllDuplicates() {
   const tabs = await browser.tabs.query({});
   const validTabs = tabs.filter(tab => isValidUrl(tab.url) && !isDomainExcluded(tab.url));
@@ -267,22 +267,22 @@ async function scanAllDuplicates() {
   return duplicates;
 }
 
-// 關閉所有重複標籤頁（保留最新的）
+// Close all duplicate tabs (keep the newest)
 async function closeAllDuplicates() {
   const duplicates = await scanAllDuplicates();
   let closedCount = 0;
   
   for (const dup of duplicates) {
-    // 按照 tab id 排序，id 較大的是較新的
+    // Sort by tab id, larger id means newer tab
     const sortedTabs = dup.tabs.sort((a, b) => b.id - a.id);
     
-    // 關閉除了最新的之外的所有標籤頁
+    // Close all tabs except the newest one
     for (let i = 1; i < sortedTabs.length; i++) {
       try {
         await browser.tabs.remove(sortedTabs[i].id);
         closedCount++;
       } catch (error) {
-        console.error('關閉標籤頁失敗:', error);
+        console.error('Failed to close tab:', error);
       }
     }
   }
@@ -290,6 +290,6 @@ async function closeAllDuplicates() {
   return { closedCount };
 }
 
-// 初始化
+// Initialize
 loadSettings();
-console.log('Tab Deduplicator 已啟動');
+console.log('Tab Deduplicator started');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="popup.css">
@@ -12,18 +12,18 @@
     
     <div class="stats-section">
       <div class="stat-item">
-        <span class="stat-label">總標籤頁數</span>
+        <span class="stat-label">Total Tabs</span>
         <span class="stat-value" id="totalTabs">-</span>
       </div>
       <div class="stat-item">
-        <span class="stat-label">重複標籤頁</span>
+        <span class="stat-label">Duplicates</span>
         <span class="stat-value" id="duplicateTabs">-</span>
       </div>
     </div>
     
     <div class="toggle-section">
       <label class="toggle-label">
-        <span>啟用自動偵測</span>
+        <span>Enable Auto Detection</span>
         <input type="checkbox" id="enableToggle" checked>
         <span class="toggle-slider"></span>
       </label>
@@ -31,19 +31,19 @@
     
     <div class="actions-section">
       <button id="scanBtn" class="btn btn-secondary">
-        🔍 掃描重複頁面
+        🔍 Scan Duplicates
       </button>
       <button id="closeAllBtn" class="btn btn-primary">
-        🗑️ 關閉所有重複
+        🗑️ Close All Duplicates
       </button>
     </div>
     
     <div class="duplicates-list" id="duplicatesList">
-      <!-- 重複標籤頁列表會顯示在這裡 -->
+      <!-- Duplicate tabs list will be displayed here -->
     </div>
     
     <div class="footer">
-      <a href="#" id="optionsLink">⚙️ 設定</a>
+      <a href="#" id="optionsLink">⚙️ Settings</a>
     </div>
   </div>
   

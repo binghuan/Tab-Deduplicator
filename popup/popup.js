@@ -1,7 +1,7 @@
 // Popup Script
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 取得 DOM 元素
+  // Get DOM elements
   const totalTabsEl = document.getElementById('totalTabs');
   const duplicateTabsEl = document.getElementById('duplicateTabs');
   const enableToggle = document.getElementById('enableToggle');
@@ -10,19 +10,19 @@ document.addEventListener('DOMContentLoaded', async () => {
   const duplicatesList = document.getElementById('duplicatesList');
   const optionsLink = document.getElementById('optionsLink');
   
-  // 載入設定
+  // Load settings
   async function loadSettings() {
     const settings = await browser.runtime.sendMessage({ action: 'getSettings' });
     enableToggle.checked = settings.enabled;
   }
   
-  // 更新統計資訊
+  // Update statistics
   async function updateStats() {
     const stats = await browser.runtime.sendMessage({ action: 'getStats' });
     totalTabsEl.textContent = stats.totalTabs;
     duplicateTabsEl.textContent = stats.duplicateTabs;
     
-    // 如果有重複標籤頁，高亮顯示
+    // Highlight if there are duplicate tabs
     if (stats.duplicateTabs > 0) {
       duplicateTabsEl.style.color = '#e53935';
     } else {
@@ -30,12 +30,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
   
-  // 顯示重複標籤頁列表
+  // Display duplicate tabs list
   function showDuplicates(duplicates) {
     duplicatesList.innerHTML = '';
     
     if (duplicates.length === 0) {
-      duplicatesList.innerHTML = '<div class="no-duplicates">✨ 沒有發現重複的標籤頁</div>';
+      duplicatesList.innerHTML = '<div class="no-duplicates">✨ No duplicate tabs found</div>';
       duplicatesList.classList.add('show');
       return;
     }
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const item = document.createElement('div');
       item.className = 'duplicate-item';
       
-      // 縮短 URL 顯示
+      // Shorten URL for display
       let displayUrl = dup.url;
       try {
         const urlObj = new URL(dup.url);
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       item.innerHTML = `
         <div class="duplicate-url" title="${dup.url}">${displayUrl}</div>
-        <div class="duplicate-count">${dup.count} 個重複標籤頁</div>
+        <div class="duplicate-count">${dup.count} duplicate tabs</div>
       `;
       
       duplicatesList.appendChild(item);
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     duplicatesList.classList.add('show');
   }
   
-  // 切換啟用狀態
+  // Toggle enabled state
   enableToggle.addEventListener('change', async () => {
     await browser.runtime.sendMessage({
       action: 'updateSettings',
@@ -77,54 +77,54 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
   
-  // 掃描重複標籤頁
+  // Scan for duplicate tabs
   scanBtn.addEventListener('click', async () => {
     scanBtn.disabled = true;
-    scanBtn.textContent = '掃描中...';
+    scanBtn.textContent = 'Scanning...';
     
     try {
       const duplicates = await browser.runtime.sendMessage({ action: 'scanDuplicates' });
       showDuplicates(duplicates);
       await updateStats();
     } catch (error) {
-      console.error('掃描失敗:', error);
+      console.error('Scan failed:', error);
     }
     
     scanBtn.disabled = false;
-    scanBtn.textContent = '🔍 掃描重複頁面';
+    scanBtn.textContent = '🔍 Scan Duplicates';
   });
   
-  // 關閉所有重複標籤頁
+  // Close all duplicate tabs
   closeAllBtn.addEventListener('click', async () => {
     closeAllBtn.disabled = true;
-    closeAllBtn.textContent = '處理中...';
+    closeAllBtn.textContent = 'Processing...';
     
     try {
       const result = await browser.runtime.sendMessage({ action: 'closeDuplicates' });
       
       if (result.closedCount > 0) {
-        alert(`已關閉 ${result.closedCount} 個重複標籤頁`);
+        alert(`Closed ${result.closedCount} duplicate tab(s)`);
       } else {
-        alert('沒有需要關閉的重複標籤頁');
+        alert('No duplicate tabs to close');
       }
       
       await updateStats();
       duplicatesList.classList.remove('show');
     } catch (error) {
-      console.error('關閉失敗:', error);
+      console.error('Close failed:', error);
     }
     
     closeAllBtn.disabled = false;
-    closeAllBtn.textContent = '🗑️ 關閉所有重複';
+    closeAllBtn.textContent = '🗑️ Close All Duplicates';
   });
   
-  // 開啟設定頁面
+  // Open settings page
   optionsLink.addEventListener('click', (e) => {
     e.preventDefault();
     browser.runtime.openOptionsPage();
   });
   
-  // 初始化
+  // Initialize
   await loadSettings();
   await updateStats();
 });

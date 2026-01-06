@@ -1,68 +1,68 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tab Deduplicator 設定</title>
+  <title>Tab Deduplicator Settings</title>
   <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <div class="container">
-    <h1>🔄 Tab Deduplicator 設定</h1>
+    <h1>🔄 Tab Deduplicator Settings</h1>
     
     <section class="section">
-      <h2>基本設定</h2>
+      <h2>Basic Settings</h2>
       
       <div class="option-item">
         <label class="checkbox-label">
           <input type="checkbox" id="enabled" checked>
           <span class="checkmark"></span>
-          <span class="label-text">啟用自動偵測重複標籤頁</span>
+          <span class="label-text">Enable auto detection of duplicate tabs</span>
         </label>
-        <p class="option-desc">開啟新標籤頁時，自動關閉相同網址的舊標籤頁</p>
+        <p class="option-desc">When opening a new tab, automatically close old tabs with the same URL</p>
       </div>
       
       <div class="option-item">
         <label class="checkbox-label">
           <input type="checkbox" id="showNotification" checked>
           <span class="checkmark"></span>
-          <span class="label-text">顯示通知</span>
+          <span class="label-text">Show notifications</span>
         </label>
-        <p class="option-desc">當關閉重複標籤頁時顯示桌面通知</p>
+        <p class="option-desc">Display desktop notification when closing duplicate tabs</p>
       </div>
     </section>
     
     <section class="section">
-      <h2>URL 比較設定</h2>
+      <h2>URL Comparison Settings</h2>
       
       <div class="option-item">
         <label class="checkbox-label">
           <input type="checkbox" id="ignoreHash" checked>
           <span class="checkmark"></span>
-          <span class="label-text">忽略網址中的 Hash (#)</span>
+          <span class="label-text">Ignore Hash (#) in URL</span>
         </label>
-        <p class="option-desc">例如：example.com/page#section1 和 example.com/page#section2 視為相同</p>
+        <p class="option-desc">e.g., example.com/page#section1 and example.com/page#section2 are treated as the same</p>
       </div>
       
       <div class="option-item">
         <label class="checkbox-label">
           <input type="checkbox" id="ignoreSearch">
           <span class="checkmark"></span>
-          <span class="label-text">忽略網址中的查詢參數 (?)</span>
+          <span class="label-text">Ignore Query Parameters (?) in URL</span>
         </label>
-        <p class="option-desc">例如：example.com/page?id=1 和 example.com/page?id=2 視為相同</p>
+        <p class="option-desc">e.g., example.com/page?id=1 and example.com/page?id=2 are treated as the same</p>
       </div>
     </section>
     
     <section class="section">
-      <h2>排除網域</h2>
-      <p class="section-desc">以下網域的標籤頁將不會被自動關閉（每行一個網域）</p>
+      <h2>Excluded Domains</h2>
+      <p class="section-desc">Tabs from the following domains will not be automatically closed (one domain per line)</p>
       
       <textarea id="excludedDomains" placeholder="example.com&#10;mail.google.com"></textarea>
     </section>
     
     <div class="actions">
-      <button id="saveBtn" class="btn btn-primary">💾 儲存設定</button>
-      <button id="resetBtn" class="btn btn-secondary">🔄 重置為預設</button>
+      <button id="saveBtn" class="btn btn-primary">💾 Save Settings</button>
+      <button id="resetBtn" class="btn btn-secondary">🔄 Reset to Default</button>
     </div>
     
     <div id="statusMessage" class="status-message"></div>
