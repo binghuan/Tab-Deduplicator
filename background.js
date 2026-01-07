@@ -126,9 +126,6 @@ async function handleDuplicateTab(newTab, oldTab) {
     // Close the old tab
     await browser.tabs.remove(oldTab.id);
     
-    // Activate the new tab
-    await browser.tabs.update(newTab.id, { active: true });
-    
     // Show notification
     if (settings.showNotification) {
       showNotification(newTab.url);
