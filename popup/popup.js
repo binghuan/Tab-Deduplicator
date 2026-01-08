@@ -110,15 +110,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     try {
       const result = await browser.runtime.sendMessage({ action: 'closeDuplicates' });
-      
+
+      await updateStats();
+      duplicatesList.classList.remove('show');
+      duplicatesList.innerHTML = '';
+
       if (result.closedCount > 0) {
         alert(`Closed ${result.closedCount} duplicate tab(s)`);
       } else {
         alert('No duplicate tabs to close');
       }
-      
-      await updateStats();
-      duplicatesList.classList.remove('show');
     } catch (error) {
       console.error('Close failed:', error);
     }
