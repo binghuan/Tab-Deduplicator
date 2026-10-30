@@ -1,5 +1,11 @@
 # Tab Deduplicator
 
+## Feature overview
+
+![Tab-Deduplicator — feature flow diagram](README-assets/project-preview.svg)
+
+Conceptual feature flow based on this repository; this is a documentation diagram, not an application screenshot.
+
 🔄 A Firefox extension that automatically detects and closes duplicate tabs.
 
 ## Features
